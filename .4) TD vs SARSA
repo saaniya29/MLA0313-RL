@@ -17,13 +17,13 @@ for step in range(1, 6):
     value_next_state -= 1
     value_current_state += 0.5
     td_error = reward + gamma * value_next_state - value_current_state
-    updated_value_current_state = update_value(value_current_state, td_error, alpha)
-    updated_value_current_sarsa = sarsa_update(value_current_sarsa, reward, value_next_state_sarsa, gamma, alpha)
+    updated_current_state = update_value(value_current_state, td_error, alpha)
+    updated_current_sarsa = sarsa_update(value_current_sarsa, reward, value_next_state_sarsa, gamma, alpha)
     print(f"\nStep {step}:")
     print(f"  Reward: {reward}")
     print(f"  Temporal Difference (TD) Error: {td_error}")
-    print(f"  Updated Value of Current State (TD): {updated_value_current_state}")
-    print(f"  Updated Value of Current State (SARSA): {updated_value_current_sarsa}")
-    value_current_state = updated_value_current_state
-    value_current_sarsa = updated_value_current_sarsa
+    print(f"  Updated Value of Current State (TD): {updated_current_state}")
+    print(f"  Updated Value of Current State (SARSA): {updated_current_sarsa}")
+    value_current_state = updated_current_state
+    value_current_sarsa = updated_current_sarsa
     value_next_state_sarsa = value_next_state
