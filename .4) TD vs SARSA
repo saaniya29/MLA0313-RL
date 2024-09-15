@@ -4,8 +4,7 @@ td_error = reward + gamma * value_next_state - value_current_state
 print(f"Temporal Difference (TD) Error: {td_error}")
 def update_value(current, td_error, learning_rate):
     return current + learning_rate * td_error
-updated_value_current_state = update_value(value_current_state, td_error, alpha)
-print(f"Updated Value of Current State: {updated_value_current_state}")
+print(f"Updated Value of Current State: {update_value(value_current_state, td_error, alpha)}")
 
 def sarsa_update(current, reward, value_next_state, gamma, learning_rate):
     return current + learning_rate * (reward + gamma * value_next_state - current)
