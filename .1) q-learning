@@ -1,0 +1,35 @@
+import numpy as np
+import random
+actions = ['up', 'down', 'left', 'right']
+q_table = np.zeros((3, 3, len(actions)))
+alpha, gamma, episodes = 0.1, 0.9, 100
+def get_next_state(state, action):
+    x, y = state
+    if action == 'up': return (max(x - 1, 0), y)
+    if action == 'down': return (min(x + 1, 2), y)
+    if action == 'left': return (x, max(y - 1, 0))
+    return (x, min(y + 1, 2))
+def get_reward(state):
+    return 10 if state == (2, 2) else -1
+def update_q_table(state, action, reward, next_state):
+    a_idx = actions.index(action)
+    best_next_action = np.max(q_table[next_state]) 
+    q_table[state[0], state[1], a_idx] += alpha * (reward + gamma * best_next_action - q_table[state[0], state[1], a_idx])
+def print_q_table(q_table):
+    print(f"{'State':<10} {'Action':<6} {'Q-value'}")
+    for i in range(3):
+        for j in range(3):
+            for k, a in enumerate(actions):
+                print(f"({i},{j})  {a:<6}  {q_table[i,j,k]:.2f}")
+print("Initial Q-table:")
+print_q_table(q_table)
+for _ in range(episodes):
+    state = (0, 0)  # Start at (0,0)
+    while state != (2, 2):  # Until goal is reached
+        action = random.choice(actions)
+        next_state = get_next_state(state, action)
+        reward = get_reward(next_state)
+        update_q_table(state, action, reward, next_state)
+        state = next_state
+print("\nUpdated Q-table after learning:")
+print_q_table(q_table)
