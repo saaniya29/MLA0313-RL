@@ -1,38 +1,33 @@
 import numpy as np
 import random
 actions = ['up', 'down', 'left', 'right']
-num_actions = len(actions)
 alpha, gamma, epsilon = 0.1, 0.9, 0.1
 def initialize_q_table():
-    return np.zeros((3, 3, num_actions))
+    return np.zeros((3, 3, len(actions)))
 def initialize_dueling_value_table():
     return np.zeros((3, 3))
 def get_next_state(state, action):
     x, y = state
-    if action == 'up':
-        return (max(x - 1, 0), y)
-    elif action == 'down':
-        return (min(x + 1, 2), y)
-    elif action == 'left':
-        return (x, max(y - 1, 0))
-    elif action == 'right':
-        return (x, min(y + 1, 2))
+    if action == 'up': return (max(x - 1, 0), y)
+    if action == 'down': return (min(x + 1, 2), y)
+    if action == 'left': return (x, max(y - 1, 0))
+    return (x, min(y + 1, 2))
 
 def update_dqn(q_table, state, action, reward, next_state):
     state_idx = (state[0], state[1])
     next_state_idx = (next_state[0], next_state[1])
-    action_idx = actions.index(action)
+    a_idx = actions.index(action)
     max_next_q = np.max(q_table[next_state_idx])
-    q_table[state_idx][action_idx] += alpha * (reward + gamma * max_next_q - q_table[state_idx][action_idx])
+    q_table[state_idx][a_idx] += alpha * (reward + gamma * max_next_q - q_table[state_idx][a_idx])
     return q_table
 
 def update_ddqn(q_table, q_table_target, state, action, reward, next_state):
     state_idx = (state[0], state[1])
     next_state_idx = (next_state[0], next_state[1])
-    action_idx = actions.index(action)
+    a_idx = actions.index(action)
     max_next_action_idx = np.argmax(q_table[state_idx])
     max_next_q = q_table_target[next_state_idx][max_next_action_idx]
-    q_table[state_idx][action_idx] += alpha * (reward + gamma * max_next_q - q_table[state_idx][action_idx])
+    q_table[state_idx][a_idx] += alpha * (reward + gamma * max_next_q - q_table[state_idx][a_idx])
     return q_table
 
 def update_dueling_dqn(q_table_value, state, action, reward, next_state):
