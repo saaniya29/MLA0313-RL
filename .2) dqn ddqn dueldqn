@@ -54,23 +54,9 @@ for _ in range(episodes):
         action = random.choice(actions) if random.uniform(0, 1) < epsilon else actions[np.argmax(q_table_dqn[state[0], state[1]])]
         next_state = get_next_state(state, action)
         q_table_dqn = update_dqn(q_table_dqn, state, action, reward, next_state)
-        state = next_state
-print_q_table(q_table_dqn, 'DQN')
-
-for _ in range(episodes):
-    state = initial_state
-    while state != goal_state:
-        action = random.choice(actions) if random.uniform(0, 1) < epsilon else actions[np.argmax(q_table_ddqn[state[0], state[1]])]
-        next_state = get_next_state(state, action)
         q_table_ddqn = update_ddqn(q_table_ddqn, q_table_target_ddqn, state, action, reward, next_state)
-        state = next_state
-print_q_table(q_table_ddqn, 'DDQN')
-
-for _ in range(episodes):
-    state = initial_state
-    while state != goal_state:
-        action = random.choice(actions) if random.uniform(0, 1) < epsilon else actions[np.argmax(q_table_value_ddqn[state[0], state[1]])]
-        next_state = get_next_state(state, action)
         q_table_value_ddqn = update_dueling_dqn(q_table_value_ddqn, state, action, reward, next_state)
         state = next_state
+print_q_table(q_table_dqn, 'DQN')
+print_q_table(q_table_ddqn, 'DDQN')
 print_q_table(q_table_value_ddqn, 'Dueling DQN Value Table')
