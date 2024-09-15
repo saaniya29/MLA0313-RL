@@ -1,0 +1,19 @@
+import numpy as np
+gamma, reward = 0.9, 10
+value_grid = np.array([[12, 8, 7],[9, 5, 6],[4, 3, 2]])
+print(value_grid)
+def bellman_update(value_grid, reward, gamma):
+    new_value_grid = np.copy(value_grid)
+    rows, cols = value_grid.shape
+    for r in range(rows):
+        for c in range(cols):
+            next_states = []
+            if r > 0: next_states.append(value_grid[r-1, c])  # Move up
+            if r < rows - 1: next_states.append(value_grid[r+1, c])  # Move down
+            if c > 0: next_states.append(value_grid[r, c-1])  # Move left
+            if c < cols - 1: next_states.append(value_grid[r, c+1])  # Move right
+            if next_states:
+                new_value_grid[r, c] = reward + gamma * max(next_states)
+    return new_value_grid
+updated_value_grid = bellman_update(value_grid, reward, gamma)
+print("\nUpdated Value Grid:\n", updated_value_grid)
