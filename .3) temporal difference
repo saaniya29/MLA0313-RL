@@ -1,0 +1,21 @@
+import numpy as np
+reward, gamma, value_next_state, value_current_state, alpha = 10, 0.9, 15, 12, 0.1
+td_error = reward + gamma * value_next_state - value_current_state
+print(f"Temporal Difference (TD) Error: {td_error}")
+def update_value(value_current, td_error, learning_rate):
+    return value_current + learning_rate * td_error
+updated_value_current_state = update_value(value_current_state, td_error, alpha)
+print(f"Updated Value of Current State: {updated_value_current_state}")
+for step in range(1, 6):
+    reward += 2
+    value_next_state -= 1
+    value_current_state += 0.5
+    td_error = reward + gamma * value_next_state - value_current_state
+    updated_value_current_state = update_value(value_current_state, td_error, alpha)
+    print(f"\nStep {step}:")
+    print(f"  Reward: {reward}")
+    print(f"  Value Next State: {value_next_state}")
+    print(f"  Value Current State: {value_current_state}")
+    print(f"  Temporal Difference (TD) Error: {td_error}")
+    print(f"  Updated Value of Current State: {updated_value_current_state}")
+    value_current_state = updated_value_current_state
