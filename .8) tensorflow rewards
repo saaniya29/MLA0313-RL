@@ -1,0 +1,26 @@
+import tensorflow as tf
+import tf_agents as tfa
+import numpy as np
+env = tfa.environments.suite_cartpole.load()
+q_net = tfa.agents.dqn.networks.QNetwork(
+    env.observation_spec(),
+    env.action_spec(),
+    fc_layer_params=(100,))
+optimizer = tf.keras.optimizers.Adam(learning_rate=1e-3)
+agent = tfa.agents.dqn.DqnAgent(
+    env.time_step_spec(),
+    env.action_spec(),
+    q_network=q_net,
+    optimizer=optimizer,
+    td_errors_loss_fn=agent.losses.TD_ERROR_LOSS_FN,
+    gamma=0.9)
+agent.initialize()
+num_episodes = 10
+for _ in range(num_episodes):
+    time_step = env.reset()
+    while not time_step.is_last():
+        action = agent.policy.action(time_step).action
+        next_time_step = env.step(action)
+        reward = next_time_step.reward
+        print(f'Reward: {reward.numpy()}')
+        time_step = next_time_step
