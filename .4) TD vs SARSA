@@ -21,4 +21,3 @@ for step in range(1, 6):
     print(f"  Updated Value of Current State (SARSA): {updated_current_sarsa}")
     value_current_state = updated_current_state
     value_current_sarsa = updated_current_sarsa
-    value_next_state_sarsa = value_next_state
